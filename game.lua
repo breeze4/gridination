@@ -15,30 +15,21 @@ function Node:activate(self)
 end
 
 function Node:onTouch(event)
-	if self:hitTestPoint(event.touch.x, event.touch.y) then
-		local x = event.touch.x
-		local y = event.touch.y
-		print("touched: X=" .. x .. " Y=" .. y)
-		Node:activate(self)
-		event:stopPropagation()
-	end
+	local x,y,w,h = self:getBounds(stage)
+	--print("original bounds: X=" .. x .. " Y=" .. y .. " W=" .. w .. " H=" .. h)
+    x = x - NODE_SIZE
+    y = y - NODE_SIZE
+    w = w + NODE_SIZE + NODE_SIZE
+    h = h + NODE_SIZE + NODE_SIZE
+	--print("extended bounds to: X=" .. x .. " Y=" .. y .. " W=" .. w .. " H=" .. h)
+ 
+    if event.touch.x < x or event.touch.x > (x+w) then return end
+    if event.touch.y < y or event.touch.y > (y+h) then return end
+	
+	Node:activate(self)
+	print("activated node at: X=" .. self:getX() .. " Y=" .. self:getY())
+	event:stopPropagation()
 end
-
-nextType = 1
-
-local function onTouchesBegin(event)
-
-	local knight1 = Bot.new(nextType, event.touch.x, event.touch.y)
-	nextType = nextType + 1
-	stage:addChild(knight1)	
-
-	if nextType == 2 then
-		nextType = 0
-	end
-
-end
-
-stage:addEventListener(Event.TOUCHES_BEGIN, onTouchesBegin)
 
 for h = 0, FIELD_HEIGHT do
 	field[h] = {}

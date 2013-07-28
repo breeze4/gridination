@@ -2,7 +2,7 @@
  <properties autorotation="0" encrypt="0" fps="60" scaleMode="5" mouseToTouch="1" iosDevice="0" packageName="com.breeze.gridination" logicalHeight="1280" logicalWidth="800" mouseTouchOrder="0" retinaDisplay="0" touchToMouse="1" assetsOnly="0" orientation="0" architecture="1">
   <imageScales/>
  </properties>
- <file source="bot.lua"/>
+ <file source="bot.lua" excludeFromExecution="1"/>
  <folder name="gfx">
   <file source="knight_red.png"/>
   <file source="knight_blue.png"/>
