@@ -19,12 +19,13 @@ function Bot:init(type, startX, startY)
 	self.xspeed = 0
 	self.yspeed = 0	
 	self.type = type
-	
-	self:setX(startX)
-	self:setY(startY)
-
 	self.width = self:getWidth()
 	self.height = self:getHeight()
+	
+	self:setX(startX - self.width/2)
+	self:setY(startY - self.height/2)
+
+	
 	
 	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
 end
