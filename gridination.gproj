@@ -7,6 +7,8 @@
   <file source="knight_red.png"/>
   <file source="knight_blue.png"/>
   <file source="knight.png"/>
+  <file source="node-on-red-25x25.png"/>
+  <file source="node-off-25x25.png"/>
   <file source="grid-1280x800.png"/>
   <file source="grid-1600x900.png"/>
  </folder>
