@@ -2,14 +2,17 @@
  <properties autorotation="0" encrypt="0" fps="60" scaleMode="5" mouseToTouch="1" iosDevice="0" packageName="com.breeze.gridination" logicalHeight="1280" logicalWidth="800" mouseTouchOrder="0" retinaDisplay="0" touchToMouse="1" assetsOnly="0" orientation="0" architecture="1">
   <imageScales/>
  </properties>
+
  <file source="knight.lua"/>
  <file source="bot.lua"/>
+ <file source="bot.lua" excludeFromExecution="1"/>
  <folder name="gfx">
+  <file source="zone-red-160x160.png"/>
+  <file source="node-on-red-24x24.png"/>
+  <file source="node-off-24x24.png"/>
   <file source="knight_red.png"/>
   <file source="knight_blue.png"/>
   <file source="knight.png"/>
-  <file source="node-on-red-25x25.png"/>
-  <file source="node-off-25x25.png"/>
   <file source="grid-1280x800.png"/>
   <file source="grid-1600x900.png"/>
  </folder>

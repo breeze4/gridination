@@ -55,6 +55,7 @@ function Bot:onEnterFrame(event)
 
 	self:setPosition(x, y)
 end
+
 --[[
 nextType = 1
 
@@ -78,3 +79,5 @@ end
 
 stage:addEventListener(Event.TOUCHES_BEGIN, onTouchesBegin)
 ]]
+
+
