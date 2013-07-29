@@ -55,3 +55,26 @@ function Bot:onEnterFrame(event)
 
 	self:setPosition(x, y)
 end
+--[[
+nextType = 1
+
+local function onTouchesBegin(event)
+
+	if nextType == 0 then
+		nextType = 1
+		
+		local knight1 = Knight.new(nextType, event.touch.x, event.touch.y)		
+		stage:addChild(knight1)	
+	else 
+		nextType = 0
+		
+		local bot1 = Bot.new(nextType, event.touch.x, event.touch.y)
+		stage:addChild(bot1)	
+	end
+
+	
+
+end
+
+stage:addEventListener(Event.TOUCHES_BEGIN, onTouchesBegin)
+]]
