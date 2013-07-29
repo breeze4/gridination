@@ -59,3 +59,25 @@ function Zone:capture(self)
 	self:addChild(zoneimg)
 end
 
+
+
+function Sprite:collidesWith(sprite2)
+	local x,y,w,h = self:getBounds(stage)
+	local x2,y2,w2,h2 = sprite2:getBounds(stage)
+
+	return not ((y+h < y2) or (y > y2+h2) or (x > x2+w2) or (x+w < x2))
+end
+
+function Sprite:getSpriteDist(sprite2)
+	--Calculate the distance between 2 vectors
+	local xdiff = self:getX() - sprite2:getX()
+	local ydiff = self:getY() - sprite2:getY()
+	local dist = (xdiff*xdiff+ydiff*ydiff)^0.5
+	return dist
+end
+
+function tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
+end
