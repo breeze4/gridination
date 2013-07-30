@@ -14,14 +14,15 @@ function BotManager:init()
 	Player2Bots[1] = Bot.new(1, 600, 800)
 	Player2Bots[2] = Bot.new(1, 700, 800)
 	
-	stage:addChild(Player1Bots[0])
 	stage:addChild(Player1Bots[1])
 	stage:addChild(Player1Bots[2])
+	stage:addChild(Player1Bots[3])
 	stage:addChild(Player2Bots[0])
 	stage:addChild(Player2Bots[1])
 	stage:addChild(Player2Bots[2])
 	
-	
+	--print("Player1Bots size: " .. table.getn(Player1Bots))
+	--print("Player2Bots size: " .. table.getn(Player2Bots))
 	
 	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
 end

@@ -1,10 +1,10 @@
 --zone class
 Zone = Core.class(Sprite)
 
-function Zone:capture(self)
-	print("captured zone")
-	self.zoneimg = Bitmap.new(Texture.new("gfx/zone-red-160x160.png"))
-	self:addChild(self.zoneimg)
+function Zone:activate(self)
+	print("----captured zone---- " .. " zone x: " .. self.x .. " y: " .. self.y)
+	zoneimg = Bitmap.new(Texture.new("gfx/zone-red-160x160.png"))
+	self:addChild(zoneimg)
 end
 
 function Zone:init(x, y)
@@ -12,39 +12,40 @@ function Zone:init(x, y)
 	self.y = y
 	self.captured = false
 	self.nodeList = {topLeft="", topRight="", bottomLeft="", bottomRight=""}
-	self.zoneimg = Bitmap.new(Texture.new("gfx/zone-off-160x160.png"))
-	self:addChild(self.zoneimg)
 end
 
-
-function Zone:checkNodeList(self)
+function Zone:checkNodeList()
 	local allNodesActivated = false
-	topLeftActive = zone.nodeList["topLeft"].active
-	topRightActive = zone.nodeList["topRight"].active
-	bottomRightActive = zone.nodeList["bottomRight"].active
-	bottomLeftActive = zone.nodeList["bottomLeft"].active
+	topLeftActive = self.nodeList["topLeft"].active
+	topRightActive = self.nodeList["topRight"].active
+	bottomRightActive = self.nodeList["bottomRight"].active
+	bottomLeftActive = self.nodeList["bottomLeft"].active
 	
 	if topLeftActive or topRightActive or bottomLeftActive or bottomRightActive
 	then
-		print("top left corner active?: " .. tostring(topLeftActive))
-		print("top right corner active?: " .. tostring(topRightActive))
-		print("bottom right corner active?: " .. tostring(bottomRightActive))
-		print("bottom left corner active?: " .. tostring(bottomLeftActive))
+		--print("zone ID: " .. tostring(self) .. " zone x: " .. self.x .. " y: " .. self.y)
+		--print("top left corner active?: " .. tostring(topLeftActive))
+		--print("top right corner active?: " .. tostring(topRightActive))
+		--print("bottom right corner active?: " .. tostring(bottomRightActive))
+		--print("bottom left corner active?: " .. tostring(bottomLeftActive))
 
 	end
 	
 	if topLeftActive and topRightActive and bottomLeftActive and bottomRightActive
-	then allNodesActivated = true
+	then 
+		allNodesActivated = true
+		
 	end
 	
 	return allNodesActivated
 end
 
-function Zone:notifyOfNodeActivation(self)
-	local allNodesActivated = Zone:checkNodeList(self)
-	print("zone ID: " .. tostring(self) .. " zone x: " .. "self.x" .. " y: " .. "self.y" .. " allNodesActivated?: " .. tostring(allNodesActivated))
-	if allNodesActivated
-	then
-		Zone:capture(self)
+function Zone:onTouch(event)
+	local allNodesActivated = self:checkNodeList()
+	print("zone on touch: " .. tostring(allNodesActivated))
+	if allNodesActivated and self.captured == false 
+	then 
+		print("----all nodes activated zone---- " .. " zone x: " .. self.x .. " y: " .. self.y)
+		Zone:activate(self)
 	end
 end

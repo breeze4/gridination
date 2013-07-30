@@ -42,7 +42,7 @@ function Bot:setTarget(ListOfTargets)
 	closestTarget = nil
 	tableLen = tablelength(ListOfTargets)
 	
-	--print(tableLen)
+	--print(table.getn(ListOfTargets))
 	
 	if tableLen > 0 then	
 		for i = 0, tableLen - 1 do
