@@ -16,8 +16,11 @@ HEIGHT_OFFSET = 30
 --core class definitions
 Node = Core.class(Sprite)
 
-function Node:init()
+function Node:init(x, y)
+	self.x = x
+	self.y = y
 	self.active = false
+	self.zoneList = {topLeft="", topRight="", bottomLeft="", bottomRight=""}
 end
 
 function Node:activate(self)
@@ -25,9 +28,11 @@ function Node:activate(self)
 	nodeimg = Bitmap.new(Texture.new("gfx/node-on-red-24x24.png"))
 	self:addChild(nodeimg)
 	print("activated node at: X=" .. self:getX() .. " Y=" .. self:getY() .. " active?: " .. tostring(self.active))
+	self:notifyZones(self)
 end
 
 function Node:checkHitBox(self, event, x, y, w, h)
+	--enlarge hitbox of node event listener by the size of the node in each direction
 	x = x - NODE_SIZE
     y = y - NODE_SIZE
     w = w + NODE_SIZE + NODE_SIZE
@@ -39,11 +44,37 @@ function Node:checkHitBox(self, event, x, y, w, h)
 	return true
 end
 
+function Node:list_iter (t)
+      local i = 0
+      local n = table.getn(t)
+	  print("table getn: " .. n)
+      return function ()
+               i = i + 1
+               if i <= n then return t[i] end
+             end
+    end
+
+function Node:notifyZones(self)
+	local topLeftZone = self.zoneList["topLeft"]
+	print("notifying from node x: " .. self.x .. " y: " .. self.y)
+	for element in Node:list_iter(self.zoneList) do
+		print("element: " .. element)
+	end
+	--Zone:notifyOfNodeActivation(self.zoneList["topLeft"])
+	--print("notify zone ID: " .. tostring(topLeftZone) .. " notified zone x: " .. "topLeftZone:getBounds(stage)" .. " y: " .. "topLeftZone:getY()")
+	--Zone:notifyOfNodeActivation(self.zoneList["topRight"])
+	--Zone:notifyOfNodeActivation(self.zoneList["bottomRight"])
+	--Zone:notifyOfNodeActivation(self.zoneList["bottomLeft"])
+	--self.zoneList["topLeft"].nodeList["bottomRight"]
+	--self.zoneList["topRight"].nodeList["bottomLeft"]
+	--self.zoneList["bottomRight"].nodeList["topLeft"]
+	--self.zoneList["bottomLeft"].nodeList["topRight"]
+end
+
 function Node:onTouch(event)
 	local withinHitBox = false
 	local x,y,w,h = self:getBounds(stage)
 	withinHitBox = Node:checkHitBox(self, event, x, y, w, h)
-	--enlarge hitbox of node event listener by the size of the node in each direction
 	if withinHitBox and self.active == false 
 	then 
 		Node:activate(self)
@@ -55,11 +86,52 @@ end
 Zone = Core.class(Sprite)
 
 function Zone:capture(self)
-	zoneimg = Bitmap.new(Texture.new("gfx/zone-red-160x160.png"))
-	self:addChild(zoneimg)
+	print("captured zone")
+	self.zoneimg = Bitmap.new(Texture.new("gfx/zone-red-160x160.png"))
+	self:addChild(self.zoneimg)
+end
+
+function Zone:init(x, y)
+	self.x = x
+	self.y = y
+	self.captured = false
+	self.nodeList = {topLeft="", topRight="", bottomLeft="", bottomRight=""}
+	self.zoneimg = Bitmap.new(Texture.new("gfx/zone-off-160x160.png"))
+	self:addChild(self.zoneimg)
 end
 
 
+function Zone:checkNodeList(self)
+	local allNodesActivated = false
+	topLeftActive = zone.nodeList["topLeft"].active
+	topRightActive = zone.nodeList["topRight"].active
+	bottomRightActive = zone.nodeList["bottomRight"].active
+	bottomLeftActive = zone.nodeList["bottomLeft"].active
+	
+	if topLeftActive or topRightActive or bottomLeftActive or bottomRightActive
+	then
+		print("top left corner active?: " .. tostring(topLeftActive))
+		print("top right corner active?: " .. tostring(topRightActive))
+		print("bottom right corner active?: " .. tostring(bottomRightActive))
+		print("bottom left corner active?: " .. tostring(bottomLeftActive))
+
+	end
+	
+	if topLeftActive and topRightActive and bottomLeftActive and bottomRightActive
+	then allNodesActivated = true
+	end
+	
+	return allNodesActivated
+end
+
+function Zone:notifyOfNodeActivation(self)
+	local allNodesActivated = Zone:checkNodeList(self)
+	print("zone ID: " .. tostring(self) .. " zone x: " .. "self.x" .. " y: " .. "self.y" .. " allNodesActivated?: " .. tostring(allNodesActivated))
+	if allNodesActivated
+	then
+		Zone:capture(self)
+	end
+end
 
 function Sprite:collidesWith(sprite2)
 	local x,y,w,h = self:getBounds(stage)
